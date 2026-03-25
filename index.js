@@ -11,6 +11,8 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import multer from 'multer'
 import { v4 as uniqueId } from 'uuid'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 import { fetchStorage, login, signup, uploadProfilePicture } from './controller/user.controller.js'
 import verifyToken from './controller/token.controller.js'
 import Authorization from './middleware/authorization.middleware.js'
@@ -22,12 +24,19 @@ import { createOrder, webhook } from './controller/razorpay.controller.js'
 
 const app = express()
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 // Middleware
 app.use(cors({ origin: "*" }))
-app.use(express.static("view"))
-app.use(express.static("storage"))
+app.use(express.static(join(__dirname, "view")))
+app.use(express.static(join(__dirname, "storage")))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+app.get("/", (req, res) => {
+    res.sendFile(join(__dirname, "view", "index.html"))
+})
 
 // Setup upload destination
 const storage = multer.diskStorage({
