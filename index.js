@@ -23,25 +23,27 @@ import { createPlan, fetchPlans } from './controller/plan.controller.js'
 import { createOrder, webhook } from './controller/razorpay.controller.js'
 
 const app = express()
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // Middleware
 app.use(cors({ origin: "*" }))
-app.use(express.static(join(__dirname, "view")))
-app.use(express.static(join(__dirname, "storage")))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+// ✅ Root route BEFORE static middleware
 app.get("/", (req, res) => {
     res.sendFile(join(__dirname, "view", "login.html"))
 })
 
+// Static files AFTER root route
+app.use(express.static(join(__dirname, "view")))
+app.use(express.static(join(__dirname, "storage")))
+
 // Setup upload destination
 const storage = multer.diskStorage({
     destination: (req, file, next) => {
-        const path = (file.fieldname === "picture" ? "storage/pictures" : "storage/files")
+        const path = join(__dirname, file.fieldname === "picture" ? "storage/pictures" : "storage/files")
         next(null, path)
     },
     filename: (req, file, next) => {
