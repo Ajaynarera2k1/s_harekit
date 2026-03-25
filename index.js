@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get("/", (req, res) => {
-    res.sendFile(join(__dirname, "view", "index.html"))
+    res.sendFile(join(__dirname, "view", "login.html"))
 })
 
 // Setup upload destination
