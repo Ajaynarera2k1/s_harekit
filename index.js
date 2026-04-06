@@ -8,6 +8,7 @@ mongoose.connect(process.env.DB_URL)
 
 import express from 'express'
 import cors from 'cors'
+import os from 'os'
 import bodyParser from 'body-parser'
 import multer from 'multer'
 import { v4 as uniqueId } from 'uuid'
@@ -47,9 +48,12 @@ app.use(express.static(join(__dirname, "view")))
 app.use(express.static(join(__dirname, "storage")))
 
 // Setup upload destination
+
+
+// Temp storage for multer
 const storage = multer.diskStorage({
     destination: (req, file, next) => {
-        next(null, '/tmp')  // ✅ use system temp folder
+        next(null, os.tmpdir())  // ✅ works on both Windows and Linux/Render
     },
     filename: (req, file, next) => {
         const nameArray = file.originalname.split(".")
