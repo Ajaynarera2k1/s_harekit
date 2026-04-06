@@ -6,7 +6,9 @@ const profileInfo = (user)=>{
     fullname.innerHTML = user.fullname
     email.innerHTML = user.email
     // ✅ Use picture URL directly - no prefix needed
-    picture.src = user.picture ? user.picture : "../images/avt.png"
+   picture.src = user.picture 
+    ? (user.picture.startsWith('http') ? user.picture : '/' + user.picture)
+    : "../images/avt.png"
 }
 
 const uploadProfilePic = async (e)=>{
