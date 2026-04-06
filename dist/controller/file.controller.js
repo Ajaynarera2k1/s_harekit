@@ -1,9 +1,6 @@
 import FileModel from '../model/file.model.js'
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
-import supabase from '../config/supabase.js'
-import fs from 'fs'
-
 
 const emailTemplate = (data)=>{
     return (
@@ -91,6 +88,7 @@ const emailTemplate = (data)=>{
                 </div>
             </body>
             </html>
+
         `
     )
 }
@@ -98,42 +96,18 @@ const emailTemplate = (data)=>{
 export const createFile = async (req, res)=>{
     try {
         const file = req.file
-
-        // Read file from temp local storage
-        const fileBuffer = fs.readFileSync(file.path)
-        const fileName = file.filename
-
-        // Upload to Supabase storage
-        const { data, error } = await supabase.storage
-            .from('files')
-            .upload(fileName, fileBuffer, {
-                contentType: file.mimetype,
-                upsert: false
-            })
-
-        if (error) throw new Error(error.message)
-
-        // Get public URL
-        const { data: urlData } = supabase.storage
-            .from('files')
-            .getPublicUrl(fileName)
-
-        // Delete temp local file
-        fs.unlinkSync(file.path)
-
         const newFile = new FileModel({
             user: req.user.id,
             filename: file.originalname,
             type: file.mimetype.split("/")[0],
             size: file.size,
-            path: urlData.publicUrl
+            path: `storage/files/${file.filename}`
         })
         await newFile.save()
         res.status(200).json(newFile)
     }
     catch(err)
     {
-        console.log(err)
         res.status(500).json({
             message: "Failed to upload file"
         })
@@ -175,10 +149,6 @@ export const deleteFile = async (req, res)=>{
                 message: 'Failed to delete file'
             })
 
-        // Extract filename from Supabase URL and delete from storage
-        const fileName = file.path.split('/').pop()
-        await supabase.storage.from('files').remove([fileName])
-
         res.status(200).json(file)
     }
     catch(err)
@@ -191,14 +161,7 @@ export const deleteFile = async (req, res)=>{
 
 export const downloadFile = async (req, res)=>{
     try {
-        const { path } = req.body
-
-        // If it's a Supabase URL, redirect to it
-        if (path.startsWith('http')) {
-            return res.redirect(path)
-        }
-
-        // Fallback for local files
+        const { path }  = req.body
         res.download(path, (err)=>{
             if(err)
                 return res.status(404).send("File not found")
@@ -218,7 +181,7 @@ export const shareFile = async (req, res)=>{
         const payload = {
             file: receipt.file
         }
-        const token = jwt.sign(payload, process.env.JWT_FILE_SECRET, {expiresIn: '7d'})
+        const token = jwt.sign(payload, process.env.JWT_FILE_SECRET , {expiresIn: '7d'})
         receipt.token = token
 
         const smtp = nodemailer.createTransport({
@@ -242,8 +205,5 @@ export const shareFile = async (req, res)=>{
     catch(err)
     {
         console.log(err.message)
-        res.status(500).json({
-            message: 'Failed to share file'
-        })
     }
 }

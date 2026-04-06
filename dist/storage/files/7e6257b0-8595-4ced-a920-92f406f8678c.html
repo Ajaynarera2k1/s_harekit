@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/short-unique-id@5.2.0/dist/short-unique-id.min.js"></script>
+</head>
+<body>
+    <script>
+        const originalData = {
+            "user": {
+                "$oid": "670e8191166b560b25fb3061"
+            },
+            "filename": "maths (1) (1).png",
+            "type": "image",
+            "size": 467624,
+            "path": "storage/files/31de0572-4aa8-4dbe-ad38-68ec3ed716fc.png",
+            "createdAt": {
+                "$date": "2024-10-15T15:36:48.997Z"
+            },
+            "updatedAt": {
+                "$date": "2024-10-15T15:36:48.997Z"
+            },
+            "__v": 0
+        }
+
+        const tmp = []
+
+        for (let i = 0; i < 200; i++) {
+            // Clone the original data object to avoid reference issues
+            const data = { ...originalData };
+            
+            // Generate a unique filename
+            const uid = new ShortUniqueId({ length: 10 });
+            const id = uid.rnd();
+            data.filename = id + ".png";  // Adding file extension
+            
+            // Push the cloned and modified object to the array
+            tmp.push(data);
+        }
+
+        console.log(JSON.stringify(tmp));
+    </script>
+</body>
+</html>

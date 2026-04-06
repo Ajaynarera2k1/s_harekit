@@ -36,12 +36,6 @@ app.get("/", (req, res) => {
     res.sendFile(join(__dirname, "view", "login.html"))
 })
 
-app.get("/health", (req, res) => {
-    res.status(200).json({
-        status: "ok"
-    })
-})
-
 // Static files AFTER root route
 app.use(express.static(join(__dirname, "view")))
 app.use(express.static(join(__dirname, "storage")))
@@ -49,11 +43,13 @@ app.use(express.static(join(__dirname, "storage")))
 // Setup upload destination
 const storage = multer.diskStorage({
     destination: (req, file, next) => {
-        next(null, '/tmp')  // ✅ use system temp folder
+        const path = join(__dirname, file.fieldname === "picture" ? "storage/pictures" : "storage/files")
+        next(null, path)
     },
     filename: (req, file, next) => {
         const nameArray = file.originalname.split(".")
-        const ext = nameArray[nameArray.length - 1]
+        const lastIndex = nameArray.length - 1
+        const ext = nameArray[lastIndex]
         const path = (file.fieldname === "picture" ? `${req.user.id}.${ext}` : `${uniqueId()}.${ext}`)
         next(null, path)
     }
