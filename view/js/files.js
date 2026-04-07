@@ -6,7 +6,7 @@ window.onload = async ()=>{
     if(!session)
         return window.location = "/login.html"
 
-    profileInfo(session.user)
+    // profileInfo(session.user)
     fetchFiles(session.token)
     fetchStorage(session.token)
 }

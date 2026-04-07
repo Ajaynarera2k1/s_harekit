@@ -6,10 +6,10 @@ const profileInfo = (user)=>{
     fullname.innerHTML = user.fullname
     email.innerHTML = user.email
     
-   picture.src = user.picture 
-    ? (user.picture.startsWith('http') ? user.picture : '/' + user.picture)
-    : "../images/avt.png"
-}
+//    picture.src = user.picture 
+//     ? (user.picture.startsWith('http') ? user.picture : '/' + user.picture)
+//     : "../images/avt.png"
+// }
 
 const uploadProfilePic = async (e)=>{
     try {
