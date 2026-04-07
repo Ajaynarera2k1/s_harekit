@@ -18,7 +18,8 @@ import { fetchStorage, login, signup, uploadProfilePicture } from './controller/
 import verifyToken from './controller/token.controller.js'
 import Authorization from './middleware/authorization.middleware.js'
 import Download from './middleware/download.middleware.js'
-import { createFile, deleteFile, downloadFile, fetchFiles, shareFile } from './controller/file.controller.js'
+import { createFile, deleteFile, downloadFile, fetchFiles } from './controller/file.controller.js'
+// , shareFile
 import dashboard from './controller/dashboard.controller.js'
 import { createPlan, fetchPlans } from './controller/plan.controller.js'
 import { createOrder, webhook } from './controller/razorpay.controller.js'
@@ -77,7 +78,7 @@ app.get("/api/file", Authorization, fetchFiles)
 app.delete("/api/file/:id", Authorization, deleteFile)
 app.post("/api/file/download", Authorization, downloadFile)
 app.get("/api/file/download", Download, downloadFile)
-app.post("/api/file/share", Authorization, shareFile)
+// app.post("/api/file/share", Authorization, shareFile)
 app.get('/api/dashboard', Authorization, dashboard)
 app.get("/api/storage", Authorization, fetchStorage)
 app.get("/api/plan", fetchPlans)

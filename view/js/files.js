@@ -145,66 +145,66 @@ const downloadFile = async (path, filename)=>{
     }
 }
 
-const openDrawer = (path, filename)=>{
-    // Showing filename
-    const filenameInput = document.getElementById("filename")
-    filenameInput.innerHTML = 'Share File - '+filename
+// const openDrawer = (path, filename)=>{
+//     // Showing filename
+//     const filenameInput = document.getElementById("filename")
+//     filenameInput.innerHTML = 'Share File - '+filename
 
-    // Setting path in file input
-    const fileInput = document.getElementById("file-input")
-    fileInput.value = path
+//     // Setting path in file input
+//     const fileInput = document.getElementById("file-input")
+//     fileInput.value = path
 
-    // Setting send email id
-    const sender = document.getElementById("sender")
-    sender.value = session.user.email
+//     // Setting send email id
+//     const sender = document.getElementById("sender")
+//     sender.value = session.user.email
 
-    const drawer = document.getElementById("drawer")
-    drawer.classList.remove("-right-[450px]")
-    drawer.classList.add("right-0")
-}
+//     const drawer = document.getElementById("drawer")
+//     drawer.classList.remove("-right-[450px]")
+//     drawer.classList.add("right-0")
+// }
 
-const closeDrawer = ()=>{
-    const drawer = document.getElementById("drawer")
-    drawer.classList.remove("right-0")
-    drawer.classList.add("-right-[450px]")
-}
+// const closeDrawer = ()=>{
+//     const drawer = document.getElementById("drawer")
+//     drawer.classList.remove("right-0")
+//     drawer.classList.add("-right-[450px]")
+// }
 
-const shareFile = async (e)=>{
-    try {
-        e.preventDefault()
-        const loadingButton = document.getElementById("loading-button")
-        loadingButton.classList.remove("hidden")
+// const shareFile = async (e)=>{
+//     try {
+//         e.preventDefault()
+//         const loadingButton = document.getElementById("loading-button")
+//         loadingButton.classList.remove("hidden")
 
-        const sendingButton = document.getElementById("sending-button")
-        sendingButton.classList.add("hidden")
+//         const sendingButton = document.getElementById("sending-button")
+//         sendingButton.classList.add("hidden")
 
-        const options = {
-            headers: {
-                Authorization: `Bearer ${session.token}`
-            }
-        }
-        const form = e.target
-        const data = {
-            sender: form[0].value,
-            user: form[1].value,
-            email: form[2].value,
-            file: form[3].value
-        }
-        await axios.post('/api/file/share', data, options)
-        new Swal({
-            icon: 'success',
-            title: 'File Sent !'
-        })
-        form.reset()
-        closeDrawer()
-        loadingButton.classList.add("hidden")
-        sendingButton.classList.remove("hidden")
-    }
-    catch(err)
-    {
-        new Swal({
-            icon: 'error',
-            title: 'File Sending failed'
-        })
-    }
-}
+//         const options = {
+//             headers: {
+//                 Authorization: `Bearer ${session.token}`
+//             }
+//         }
+//         const form = e.target
+//         const data = {
+//             sender: form[0].value,
+//             user: form[1].value,
+//             email: form[2].value,
+//             file: form[3].value
+//         }
+//         await axios.post('/api/file/share', data, options)
+//         new Swal({
+//             icon: 'success',
+//             title: 'File Sent !'
+//         })
+//         form.reset()
+//         closeDrawer()
+//         loadingButton.classList.add("hidden")
+//         sendingButton.classList.remove("hidden")
+//     }
+//     catch(err)
+//     {
+//         new Swal({
+//             icon: 'error',
+//             title: 'File Sending failed'
+//         })
+//     }
+// }

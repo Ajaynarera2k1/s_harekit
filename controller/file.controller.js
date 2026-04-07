@@ -212,38 +212,38 @@ export const downloadFile = async (req, res)=>{
     }
 }
 
-export const shareFile = async (req, res)=>{
-    try {
-        const receipt = req.body
-        const payload = {
-            file: receipt.file
-        }
-        const token = jwt.sign(payload, process.env.JWT_FILE_SECRET, {expiresIn: '7d'})
-        receipt.token = token
+// export const shareFile = async (req, res)=>{
+//     try {
+//         const receipt = req.body
+//         const payload = {
+//             file: receipt.file
+//         }
+//         const token = jwt.sign(payload, process.env.JWT_FILE_SECRET, {expiresIn: '7d'})
+//         receipt.token = token
 
-        const smtp = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.SMTP_EMAIL,
-                pass: process.env.SMTP_PASSWORD
-            }
-        })
+//         const smtp = nodemailer.createTransport({
+//             service: 'gmail',
+//             auth: {
+//                 user: process.env.SMTP_EMAIL,
+//                 pass: process.env.SMTP_PASSWORD
+//             }
+//         })
 
-        await smtp.sendMail({
-            from: process.env.SMTP_EMAIL,
-            to: receipt.email,
-            subject: 'ShareKit - File Recieved !',
-            html: emailTemplate(receipt)
-        })
-        res.status(200).json({
-            message: 'File sent'
-        })
-    }
-    catch(err)
-    {
-        console.log(err.message)
-        res.status(500).json({
-            message: 'Failed to share file'
-        })
-    }
-}
+//         await smtp.sendMail({
+//             from: process.env.SMTP_EMAIL,
+//             to: receipt.email,
+//             subject: 'ShareKit - File Recieved !',
+//             html: emailTemplate(receipt)
+//         })
+//         res.status(200).json({
+//             message: 'File sent'
+//         })
+//     }
+//     catch(err)
+//     {
+//         console.log(err.message)
+//         res.status(500).json({
+//             message: 'Failed to share file'
+//         })
+//     }
+// }
