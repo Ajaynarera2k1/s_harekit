@@ -2,8 +2,6 @@
 
 A cloud-based file sharing and storage platform built with Node.js, Express, MongoDB, and Supabase Storage.
 
-## 🌐 Live Demo
-[https://s-harekit.onrender.com](https://s-harekit.onrender.com)
 
 ---
 
